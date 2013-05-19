@@ -95,8 +95,9 @@ $(function() {
     // loading any preexisting todos that might be saved to Parse.
     initialize: function() {
       var self = this;
+      alert("In Incidents View");
 
-      _.bindAll(this,  'logOut', 'postIncident');
+      _.bindAll(this,  'logOut', 'postIncident', 'render');
 
       // Main incident management template
       //this.$el.html(_.template($("#incidents-template").html()));
@@ -109,6 +110,11 @@ $(function() {
       new LogInView();
       this.undelegateEvents();
       delete this;
+    },
+
+    render: function() {
+      this.$el.html(_.template($("#incidents-template").html()));
+      this.delegateEvents();
     },
 
     // Re-rendering the App just means refreshing the statistics -- the rest
