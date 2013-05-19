@@ -468,3 +468,6 @@ label[for='toggle-all'] {
     color: #888;
 }
 
+#map-display-here {
+    height: 180px;
+}
