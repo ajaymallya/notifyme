@@ -14,9 +14,9 @@ $(function() {
   Parse.$ = jQuery;
 
   // Initialize Parse with your Parse application javascript keys
-  Parse.initialize("0Oq3tTp9JMvd72LOrGN25PiEq9XgVHCxo57MQbpT",
-                   "vUFy2o7nFx3eeKVlZneYMPI2MBoxT5LhWNoIWPja",
-                   "icMl3nJBNL8PssR9YEKM54JWSlDDrQb01xNKoylR");
+  Parse.initialize("Fsj56BTmZZdYctl1eYZ2D8d1RY5zNSkeej6xyuZS",
+                   "icMl3nJBNL8PssR9YEKM54JWSlDDrQb01xNKoylR",
+                   "sFR4tgWkxhomsGgbEfjsRe0oU1VdYPNoSnpeMXGc");
 
   // Incident Model
   // ----------
@@ -32,8 +32,9 @@ $(function() {
   var Incident = Parse.Object.extend("Incident", {
     // Default attributes for the todo.
     defaults: {
-      content: "empty incident...",
-      done: false
+      incidentdate: new Date(),
+      user: 'ajay',
+      location: new Parse.GeoPoint(30, 30)
     },
 
     // Ensure that each incident created has `content`.
@@ -257,9 +258,12 @@ $(function() {
     signUp: function(e) {
       var self = this;
       var username = this.$("#signup-username").val();
-      var password = this.$("#signup-password").val();
+      var pass = this.$("#signup-password").val();
+      var location = new Parse.GeoPoint({latitude:30.0, longitude:30.0});
+      var email = "a@b.com";
 
-      Parse.User.signUp(username, password, { ACL: new Parse.ACL() }, {
+
+      Parse.User.signUp(username, pass, {location: new Parse.GeoPoint({latitude:30.0, longitude:30.0}), email: 'a@b.com', ACL: new Parse.ACL() }, {
         success: function(user) {
           new ManageIncidentsView();
           self.undelegateEvents();
