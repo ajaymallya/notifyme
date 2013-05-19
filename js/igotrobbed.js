@@ -165,7 +165,6 @@ $(function() {
     },
 
     submitForm: function() {
-      alert('In submitForm');
       var self = this;
       var description = this.$("#record-description").val();
       var date = this.$("#record-date").val();
