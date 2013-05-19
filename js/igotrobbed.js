@@ -95,7 +95,6 @@ $(function() {
     // loading any preexisting todos that might be saved to Parse.
     initialize: function() {
       var self = this;
-      alert("In Incidents View");
 
       _.bindAll(this,  'logOut', 'postIncident', 'render');
 
@@ -121,10 +120,64 @@ $(function() {
     // of the app doesn't change.
     // Filters the list based on which type of filter is selected
     postIncident: function(e) {
-      alert('kkk');
+      new RecordIncidentsView();
+      this.undelegateEvents();
+      delete this;
     },
 
   });
+
+
+// The main view that lets a user manage their incident items
+  var RecordIncidentsView = Parse.View.extend({
+
+    // Delegated events for creating new items, and clearing completed ones.
+    events: {
+      "submit form.submitForm": "submitForm"
+    },
+
+    el: ".content",
+
+    // At initialization we bind to the relevant events on the `Todos`
+    // collection, when items are added or changed. Kick things off by
+    // loading any preexisting todos that might be saved to Parse.
+    initialize: function() {
+      var self = this;
+
+      _.bindAll(this,  'logOut', 'render', 'submitForm');
+
+      // Main incident management template
+      //this.$el.html(_.template($("#incidents-template").html()));
+      this.render();
+    },
+
+    // Logs out the user and shows the login view
+    logOut: function(e) {
+      Parse.User.logOut();
+      new LogInView();
+      this.undelegateEvents();
+      delete this;
+    },
+
+    render: function() {
+      this.$el.html(_.template($("#record-incident-template").html()));
+      this.delegateEvents();
+    },
+
+    submitForm: function() {
+      alert('In submitForm');
+      var self = this;
+      var description = this.$("#record-description").val();
+      var date = this.$("#record-date").val();
+
+      new IncidentsView();
+      this.undelegateEvents();
+      delete this;
+
+    }
+
+  });
+
 
   var LogInView = Parse.View.extend({
     events: {

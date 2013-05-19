@@ -76,5 +76,20 @@
   </div>
 </script>
 
+<script type="text/template" id="record-incident-template">
+  <div id="user-info">
+    Signed in as <%= Parse.User.current().get("username") %> (<a href="#" class="log-out">Log out</a>)
+  </div>
+
+  <div class="section">
+  <form class="submitForm">
+    <input type="text" id ="record-description" placeholder = "Enter description" />
+    <input type="date" id ="record-incidentdate" placeholder = "Enter date" />
+    <button id="postIncident">Submit</button>
+  </form>
+
+  </div>
+</script>
+
 </body>
 </html>
