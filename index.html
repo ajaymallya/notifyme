@@ -65,20 +65,13 @@
     Signed in as <%= Parse.User.current().get("username") %> (<a href="#" class="log-out">Log out</a>)
   </div>
 
+  <div id="map-display-here">
+  </div>
+
   <div class="section">
 
-    <header id="header">
-      <input id="new-incident" placeholder="What needs to be done?" type="text" />
-    </header>
+  <button id="postIncident">Post Incident</button>
 
-    <div id="main">
-      <input id="toggle-all" type="checkbox">
-      <label for="toggle-all">Mark all as complete</label>
-
-      <ul id="incident-list">
-        <img src='images/spinner.gif' class='spinner' />
-      </ul>
-    </div>
 
   </div>
 </script>

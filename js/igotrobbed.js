@@ -84,11 +84,7 @@ $(function() {
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-      "keypress #new-incident":  "createOnEnter",
-      "click #clear-completed": "clearCompleted",
-      "click #toggle-all": "toggleAllComplete",
-      "click .log-out": "logOut",
-      "click ul#filters a": "selectFilter"
+      "click #postIncident": "postIncident"
     },
 
     el: ".content",
@@ -99,29 +95,10 @@ $(function() {
     initialize: function() {
       var self = this;
 
-      _.bindAll(this, 'addOne', 'addAll', 'addSome', 'render', 'toggleAllComplete', 'logOut', 'createOnEnter');
+      _.bindAll(this,  'logOut', 'postIncident');
 
       // Main incident management template
       this.$el.html(_.template($("#incidents-template").html()));
-
-      this.input = this.$("#new-incident");
-      this.allCheckbox = this.$("#toggle-all")[0];
-
-      // Create our collection of Todos
-      this.incidents = new IncidentList;
-
-      // Setup the query for the collection to look for incidents from the current user
-      this.incidents.query = new Parse.Query(Incident);
-      this.incidents.query.equalTo("user", Parse.User.current());
-
-      this.incidents.bind('add',     this.addOne);
-      this.incidents.bind('reset',   this.addAll);
-      this.incidents.bind('all',     this.render);
-
-      // Fetch all the incident items for this user
-      this.incidents.fetch();
-
-      state.on("change", this.filter, this);
     },
 
     // Logs out the user and shows the login view
@@ -134,90 +111,10 @@ $(function() {
 
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
-    render: function() {
-      var done = this.incidents.done().length;
-      var remaining = this.incidents.remaining().length;
-
-      this.delegateEvents();
-
-      this.allCheckbox.checked = !remaining;
-    },
-
     // Filters the list based on which type of filter is selected
-    selectFilter: function(e) {
-      var el = $(e.target);
-      var filterValue = el.attr("id");
-      state.set({filter: filterValue});
-      Parse.history.navigate(filterValue);
+    postIncident: function() {
     },
 
-    filter: function() {
-      var filterValue = state.get("filter");
-      this.$("ul#filters a").removeClass("selected");
-      this.$("ul#filters a#" + filterValue).addClass("selected");
-      if (filterValue === "all") {
-        this.addAll();
-      } else if (filterValue === "completed") {
-        this.addSome(function(item) { return item.get('done') });
-      } else {
-        this.addSome(function(item) { return !item.get('done') });
-      }
-    },
-
-    // Resets the filters to display all incidents
-    resetFilters: function() {
-      this.$("ul#filters a").removeClass("selected");
-      this.$("ul#filters a#all").addClass("selected");
-      this.addAll();
-    },
-
-    // Add a single todo item to the list by creating a view for it, and
-    // appending its element to the `<ul>`.
-    addOne: function(incident) {
-      var view = new IncidentView({model: incident});
-      this.$("#incident-list").append(view.render().el);
-    },
-
-    // Add all items in the Todos collection at once.
-    addAll: function(collection, filter) {
-      this.$("#incident-list").html("");
-      this.incidents.each(this.addOne);
-    },
-
-    // Only adds some todos, based on a filtering function that is passed in
-    addSome: function(filter) {
-      var self = this;
-      this.$("#incident-list").html("");
-      this.incidents.chain().filter(filter).each(function(item) { self.addOne(item) });
-    },
-
-    // If you hit return in the main input field, create new Todo model
-    createOnEnter: function(e) {
-      var self = this;
-      if (e.keyCode != 13) return;
-
-      this.incidents.create({
-        content: this.input.val(),
-        order:   this.incidents.nextOrder(),
-        done:    false,
-        user:    Parse.User.current(),
-        ACL:     new Parse.ACL(Parse.User.current())
-      });
-
-      this.input.val('');
-      this.resetFilters();
-    },
-
-    // Clear all done todo items, destroying their models.
-    clearCompleted: function() {
-      _.each(this.incidents.done(), function(incident){ incident.destroy(); });
-      return false;
-    },
-
-    toggleAllComplete: function () {
-      var done = this.allCheckbox.checked;
-      this.incidents.each(function (incident) { incident.save({'done': done}); });
-    }
   });
 
   var LogInView = Parse.View.extend({
