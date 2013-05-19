@@ -255,15 +255,25 @@ $(function() {
       return false;
     },
 
+
     signUp: function(e) {
       var self = this;
-      var username = this.$("#signup-username").val();
-      var pass = this.$("#signup-password").val();
-      var location = new Parse.GeoPoint({latitude:30.0, longitude:30.0});
-      var email = "a@b.com";
+      var user = new Parse.User();
+      user.set("username",this.$("#signup-username").val());
+      user.set("password",this.$("#signup-password").val());
+      user.set("email",this.$("#signup-email").val());
+      if (navigator.geolocation)
+      {
+//          user.set("location",new Parse.GeoPoint(navigator.geolocation.getCurrentPosition()));
+          user.set("location",new Parse.GeoPoint({latitude:47.62201, longitude:-122.3630}));
+      }
+      else
+      {
+        user.set("location",new Parse.GeoPoint({latitude:47.62201, longitude:-122.3630}));
+      }
+      user.set("ACL",new Parse.ACL());
 
-
-      Parse.User.signUp(username, pass, {location: new Parse.GeoPoint({latitude:30.0, longitude:30.0}), email: 'a@b.com', ACL: new Parse.ACL() }, {
+      user.signUp(null, {
         success: function(user) {
           new ManageIncidentsView();
           self.undelegateEvents();
