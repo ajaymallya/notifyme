@@ -102,7 +102,7 @@ $(function() {
       _.bindAll(this, 'addOne', 'addAll', 'addSome', 'render', 'toggleAllComplete', 'logOut', 'createOnEnter');
 
       // Main incident management template
-      this.$el.html(_.template($("#manage-incidents-template").html()));
+      this.$el.html(_.template($("#incidents-template").html()));
 
       this.input = this.$("#new-incident");
       this.allCheckbox = this.$("#toggle-all")[0];
@@ -276,7 +276,7 @@ $(function() {
 
       user.signUp(null, {
         success: function(user) {
-          new ManageIncidentsView();
+          new IncidentsView();
           self.undelegateEvents();
           delete self;
         },
@@ -310,7 +310,7 @@ $(function() {
 
     render: function() {
       if (Parse.User.current()) {
-        new ManageIncidentsView();
+        new IncidentsView();
       } else {
         new LogInView();
       }
