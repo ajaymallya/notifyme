@@ -74,12 +74,17 @@ $(function() {
 
   });
 
+  var RecordIncidentView = Parse.View.extend({
+
+    events:
+  })
+
 
   // The Application
   // ---------------
 
   // The main view that lets a user manage their incident items
-  var ManageIncidentsView = Parse.View.extend({
+  var IncidentsView = Parse.View.extend({
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
@@ -239,7 +244,7 @@ $(function() {
 
       Parse.User.logIn(username, password, {
         success: function(user) {
-          new ManageIncidentsView();
+          new IncidentsView();
           self.undelegateEvents();
           delete self;
         },
