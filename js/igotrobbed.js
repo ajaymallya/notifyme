@@ -74,10 +74,6 @@ $(function() {
 
   });
 
-  var RecordIncidentView = Parse.View.extend({
-
-    events:
-  })
 
 
   // The Application
