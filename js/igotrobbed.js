@@ -84,7 +84,8 @@ $(function() {
 
     // Delegated events for creating new items, and clearing completed ones.
     events: {
-      "click #postIncident": "postIncident"
+      "click .log-out": "logOut",
+      "submit form.submitIncident": "postIncident"
     },
 
     el: ".content",
@@ -98,7 +99,8 @@ $(function() {
       _.bindAll(this,  'logOut', 'postIncident');
 
       // Main incident management template
-      this.$el.html(_.template($("#incidents-template").html()));
+      //this.$el.html(_.template($("#incidents-template").html()));
+      this.render();
     },
 
     // Logs out the user and shows the login view
@@ -112,7 +114,8 @@ $(function() {
     // Re-rendering the App just means refreshing the statistics -- the rest
     // of the app doesn't change.
     // Filters the list based on which type of filter is selected
-    postIncident: function() {
+    postIncident: function(e) {
+      alert('kkk');
     },
 
   });
